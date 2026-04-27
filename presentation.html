@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stratégie de Diffusion Multicanal - Coach360</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #0A0A0A;
+            color: #0A0A0A;
+            overflow: hidden;
+        }
+        
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            background: #F5F7FA;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide-content {
+            width: 100%;
+            height: 100%;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        /* Titre slide */
+        .slide-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 72px;
+            font-style: italic;
+            color: #0A0A0A;
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+        
+        .slide-subtitle {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 20px;
+            color: #2C3E50;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+        }
+        
+        .slide-description {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 18px;
+            color: #0A0A0A;
+            line-height: 1.6;
+            max-width: 900px;
+        }
+        
+        /* Contenu structuré */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .content-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 24px;
+        }
+        
+        .card-label {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            color: #E6C27A;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .card-value {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            color: #0A0A0A;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        /* Contrôles de navigation */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 30px;
+        }
+        
+        button {
+            background: #2C3E50;
+            color: #F5F7FA;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        button:hover {
+            background: #E6C27A;
+            color: #0A0A0A;
+        }
+        
+        .slide-counter {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: #0A0A0A;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+        }
+        
+        /* Styles spécifiques */
+        .highlight-box {
+            background: linear-gradient(135deg, #2C3E50 0%, #1a2a38 100%);
+            color: #F5F7FA;
+            padding: 28px;
+            margin-top: 20px;
+        }
+        
+        .highlight-title {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 12px;
+            color: #E6C27A;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .highlight-text {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 18px;
+            color: #F5F7FA;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        /* Tableaux */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.9);
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #E6C27A;
+            font-size: 13px;
+        }
+        
+        th {
+            background: #2C3E50;
+            color: #F5F7FA;
+            font-weight: 600;
+        }
+        
+        /* Listes */
+        .content-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .content-list li {
+            padding: 12px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .content-list li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #E6C27A;
+            font-weight: bold;
+        }
+        
+        /* Grille de canaux */
+        .channels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .channel-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 24px;
+            text-align: center;
+            border-top: 4px solid #E6C27A;
+        }
+        
+        .channel-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+        
+        .channel-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20px;
+            color: #0A0A0A;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .channel-desc {
+            font-size: 13px;
+            color: #2C3E50;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Titre -->
+        <div class="slide active">
+            <div class="slide-content">
+                <h1 class="slide-title">Stratégie de Diffusion<br>Multicanal</h1>
+                <div style="width: 60px; height: 3px; background: #E6C27A; margin: 24px 0;"></div>
+                <div style="font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: #E6C27A; letter-spacing: 2px; margin-bottom: 8px;">COACH 360</div>
+                <div class="slide-subtitle">360° de coaching. Zéro compromis.</div>
+                <p class="slide-description">Présentation de la stratégie complète de promotion multicanal pour maximiser votre portée et engagement</p>
+            </div>
+        </div>
+        
+        <!-- Slide 2: Objectifs -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Nos Objectifs</h1>
+                <p class="slide-subtitle">Les 5 piliers de notre stratégie</p>
+                <ul class="content-list">
+                    <li><strong>Augmenter la visibilité</strong> du site vitrine auprès des prospects</li>
+                    <li><strong>Générer du trafic qualifié</strong> vers le site</li>
+                    <li><strong>Créer des points de contact</strong> multiples avec les prospects</li>
+                    <li><strong>Faciliter le partage</strong> et la viralité du message</li>
+                    <li><strong>Mesurer l'engagement</strong> sur chaque canal</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Infrastructure -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Infrastructure de Base</h1>
+                <p class="slide-subtitle">Notre site vitrine hébergé</p>
+                <div class="content-grid">
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">URL du Site</div>
+                            <div class="card-value">https://julienjvo-33290.github.io/coach360/</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Plateforme</div>
+                            <div class="card-value">GitHub Pages (Gratuit, Pérenne, Fiable)</div>
+                        </div>
+                    </div>
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Design</div>
+                            <div class="card-value">Moderne, minimaliste, professionnel</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">CTA Principal</div>
+                            <div class="card-value">Démarre ton programme →</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 4: Canaux -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Les 5 Canaux</h1>
+                <p class="slide-subtitle">Notre stratégie multicanal</p>
+                <div class="channels-grid">
+                    <div class="channel-card">
+                        <div class="channel-icon">💬</div>
+                        <div class="channel-name">WhatsApp</div>
+                        <div class="channel-desc">Communication directe et personnalisée</div>
+                    </div>
+                    <div class="channel-card">
+                        <div class="channel-icon">💼</div>
+                        <div class="channel-name">LinkedIn</div>
+                        <div class="channel-desc">Positionnement professionnel et B2B</div>
+                    </div>
+                    <div class="channel-card">
+                        <div class="channel-icon">📸</div>
+                        <div class="channel-name">Instagram</div>
+                        <div class="channel-desc">Engagement visuel et storytelling</div>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px; max-width: 66.66%; margin-left: auto; margin-right: auto;">
+                    <div class="channel-card">
+                        <div class="channel-icon">📧</div>
+                        <div class="channel-name">Email</div>
+                        <div class="channel-desc">Communication formelle et convertissante</div>
+                    </div>
+                    <div class="channel-card">
+                        <div class="channel-icon">📱</div>
+                        <div class="channel-name">QR Code</div>
+                        <div class="channel-desc">Point de contact physique et digital</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 5: WhatsApp -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">WhatsApp</h1>
+                <p class="slide-subtitle">Taux de lecture 95%+</p>
+                <div class="content-grid">
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Audience</div>
+                            <div class="card-value">Prospects chauds, contacts personnels</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Fréquence</div>
+                            <div class="card-value">2-3 messages par semaine</div>
+                        </div>
+                    </div>
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Métrique Clé</div>
+                            <div class="card-value">Taux de clic (20-30%)</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Modèles</div>
+                            <div class="card-value">3 variantes disponibles</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <div class="highlight-title">Avantage Principal</div>
+                    <div class="highlight-text">Communication bidirectionnelle et engagement immédiat</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 6: LinkedIn -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">LinkedIn</h1>
+                <p class="slide-subtitle">Audience professionnelle qualifiée</p>
+                <div class="content-grid">
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Audience</div>
+                            <div class="card-value">Professionnels, entrepreneurs, cadres</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Fréquence</div>
+                            <div class="card-value">1-2 posts/semaine + 5-10 DMs/semaine</div>
+                        </div>
+                    </div>
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Métrique Clé</div>
+                            <div class="card-value">Impressions (500+/post)</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Modèles</div>
+                            <div class="card-value">Post public + Message direct</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <div class="highlight-title">Avantage Principal</div>
+                    <div class="highlight-text">Crédibilité, autorité et audience professionnelle</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 7: Instagram -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Instagram</h1>
+                <p class="slide-subtitle">Audience jeune et engagée</p>
+                <div class="content-grid">
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Audience</div>
+                            <div class="card-value">Jeunes professionnels, entrepreneurs</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Fréquence</div>
+                            <div class="card-value">3-5 stories/semaine + 2-3 posts/semaine</div>
+                        </div>
+                    </div>
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Métrique Clé</div>
+                            <div class="card-value">Engagement (5-10%)</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Bio</div>
+                            <div class="card-value">Lien direct vers le site</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <div class="highlight-title">Avantage Principal</div>
+                    <div class="highlight-text">Format visuel, stories interactives et communauté engagée</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Email -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Email</h1>
+                <p class="slide-subtitle">ROI 42:1</p>
+                <div class="content-grid">
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Audience</div>
+                            <div class="card-value">Base de données prospects, newsletter</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Fréquence</div>
+                            <div class="card-value">1-2 emails par semaine</div>
+                        </div>
+                    </div>
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Métrique Clé</div>
+                            <div class="card-value">Taux d'ouverture (30%+)</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">A/B Testing</div>
+                            <div class="card-value">3 objets différents à tester</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <div class="highlight-title">Avantage Principal</div>
+                    <div class="highlight-text">ROI élevé, traçabilité complète et segmentation possible</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 9: QR Code -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">QR Code</h1>
+                <p class="slide-subtitle">Point de contact physique et digital</p>
+                <div class="content-grid">
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Format</div>
+                            <div class="card-value">PNG 400x480px</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Couleurs</div>
+                            <div class="card-value">Noir sur beige (marque)</div>
+                        </div>
+                    </div>
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Utilisations</div>
+                            <div class="card-value">Cartes de visite, flyers, formulaires, stories</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="card-label">Métrique Clé</div>
+                            <div class="card-value">Nombre de scans (10-20/semaine)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="highlight-box">
+                    <div class="highlight-title">Avantage Principal</div>
+                    <div class="highlight-text">Pont entre monde physique et digital, traçabilité des scans</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 10: Livrables -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Livrables Créés</h1>
+                <p class="slide-subtitle">Assets générés automatiquement</p>
+                <ul class="content-list">
+                    <li><strong>Site vitrine hébergé</strong> sur GitHub Pages (https://julienjvo-33290.github.io/coach360/)</li>
+                    <li><strong>QR Code professionnel</strong> (PNG 400x480px, couleurs marque)</li>
+                    <li><strong>Signature email HTML</strong> (compatible tous clients email)</li>
+                    <li><strong>Modèles de messages</strong> (tous canaux, prêts à copier-coller)</li>
+                    <li><strong>Documentation stratégique</strong> (guide complet et détaillé)</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 11: Calendrier Semaine 1 -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Calendrier - Semaine 1</h1>
+                <p class="slide-subtitle">Phase de lancement</p>
+                <ul class="content-list">
+                    <li><strong>Jour 1-2:</strong> Préparation des listes de prospects</li>
+                    <li><strong>Jour 3:</strong> Envoi des premiers emails</li>
+                    <li><strong>Jour 4:</strong> Posts LinkedIn</li>
+                    <li><strong>Jour 5:</strong> Stories Instagram</li>
+                    <li><strong>Jour 6-7:</strong> Messages WhatsApp personnalisés</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 12: Calendrier Semaines 2-4 -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Calendrier - Semaines 2-4</h1>
+                <p class="slide-subtitle">Phase de consolidation</p>
+                <ul class="content-list">
+                    <li><strong>Lundi:</strong> Post LinkedIn</li>
+                    <li><strong>Mercredi:</strong> Stories Instagram (3-5)</li>
+                    <li><strong>Jeudi:</strong> Email de suivi</li>
+                    <li><strong>Vendredi:</strong> Messages WhatsApp</li>
+                    <li><strong>Samedi-Dimanche:</strong> Engagement sur commentaires</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 13: Métriques -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Métriques par Canal</h1>
+                <p class="slide-subtitle">KPI et cibles de suivi</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Canal</th>
+                                <th>Métrique</th>
+                                <th>Cible</th>
+                                <th>Suivi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>WhatsApp</td>
+                                <td>Taux de clic</td>
+                                <td>20-30%</td>
+                                <td>Quotidien</td>
+                            </tr>
+                            <tr>
+                                <td>LinkedIn</td>
+                                <td>Impressions</td>
+                                <td>500+/post</td>
+                                <td>Quotidien</td>
+                            </tr>
+                            <tr>
+                                <td>Instagram</td>
+                                <td>Engagement</td>
+                                <td>5-10%</td>
+                                <td>2x/semaine</td>
+                            </tr>
+                            <tr>
+                                <td>Email</td>
+                                <td>Ouverture</td>
+                                <td>30%+</td>
+                                <td>Quotidien</td>
+                            </tr>
+                            <tr>
+                                <td>QR Code</td>
+                                <td>Scans</td>
+                                <td>10-20/semaine</td>
+                                <td>Hebdo</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 14: Indicateurs de Succès -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Indicateurs de Succès</h1>
+                <p class="slide-subtitle">Cibles globales de la campagne</p>
+                <ul class="content-list">
+                    <li><strong>Trafic site:</strong> +50% de visites en 30 jours</li>
+                    <li><strong>Engagement email:</strong> Taux de clic >5%</li>
+                    <li><strong>Conversion:</strong> 1-2% des visiteurs deviennent prospects</li>
+                    <li><strong>Viralité:</strong> Partages organiques mesurables sur les réseaux</li>
+                    <li><strong>QR Code:</strong> 10-20 scans par semaine</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 15: Bonnes Pratiques -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Bonnes Pratiques</h1>
+                <p class="slide-subtitle">Conseils par canal</p>
+                <ul class="content-list">
+                    <li><strong>WhatsApp:</strong> Personnalisez avec le prénom, envoyez 9h-12h et 18h-21h</li>
+                    <li><strong>LinkedIn:</strong> Variez posts/messages, engagez dans les 2 heures, publiez 8h-10h et 17h-19h</li>
+                    <li><strong>Instagram:</strong> Stories matin/soir, stickers interactifs, répondez rapidement aux DM</li>
+                    <li><strong>Email:</strong> Testez objets, segmentez audience, envoyez 8h-10h et 18h-20h</li>
+                    <li><strong>QR Code:</strong> Testez avant impression, placez en position visible, couleurs contrastées</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 16: Optimisation Continue -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Optimisation Continue</h1>
+                <p class="slide-subtitle">Cycles de révision et amélioration</p>
+                <div class="content-grid">
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Mensuel</div>
+                            <ul style="list-style: none; padding-left: 0; margin-top: 8px;">
+                                <li style="padding: 4px 0;">✓ Analyser métriques</li>
+                                <li style="padding: 4px 0;">✓ Identifier canaux performants</li>
+                                <li style="padding: 4px 0;">✓ Ajuster fréquence</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="content-column">
+                        <div class="info-card">
+                            <div class="card-label">Trimestriel</div>
+                            <ul style="list-style: none; padding-left: 0; margin-top: 8px;">
+                                <li style="padding: 4px 0;">✓ Revoir stratégie</li>
+                                <li style="padding: 4px 0;">✓ Tester nouveaux canaux</li>
+                                <li style="padding: 4px 0;">✓ Former l'équipe</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 17: Conformité -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Conformité & Sécurité</h1>
+                <p class="slide-subtitle">Points importants à retenir</p>
+                <ul class="content-list">
+                    <li>✓ Respectez les réglementations RGPD pour les emails et données personnelles</li>
+                    <li>✓ Utilisez des adresses email vérifiées et comptes sociaux authentiques</li>
+                    <li>✓ Maintenez une base de données à jour de vos prospects</li>
+                    <li>✓ Collectez les retours pour amélioration continue</li>
+                    <li>✓ Documentez toutes les activités de campagne pour analyse</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 18: Conclusion -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="slide-title">Prêt à Lancer!</h1>
+                <p class="slide-subtitle">Récapitulatif de votre stratégie</p>
+                <div class="highlight-box">
+                    <div class="highlight-title">Vous avez maintenant:</div>
+                    <div class="highlight-text">
+                        ✓ Une stratégie multicanal complète et documentée<br><br>
+                        ✓ Des assets professionnels générés (QR Code, signature email, modèles)<br><br>
+                        ✓ Un calendrier de diffusion structuré<br><br>
+                        ✓ Des modèles prêts à l'emploi pour tous les canaux<br><br>
+                        ✓ Des métriques pour mesurer le succès<br><br>
+                        <strong style="font-size: 20px;">Commencez dès aujourd'hui et mesurez vos résultats! 🚀</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contrôles de navigation -->
+    <div class="controls">
+        <button onclick="previousSlide()">← Précédent</button>
+        <span class="slide-counter"><span id="current">1</span> / <span id="total">18</span></span>
+        <button onclick="nextSlide()">Suivant →</button>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        
+        document.getElementById('total').textContent = totalSlides;
+        
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n].classList.add('active');
+            document.getElementById('current').textContent = n + 1;
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+        
+        function previousSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+        
+        // Navigation au clavier
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+        
+        showSlide(0);
+    </script>
+</body>
+</html>
