@@ -440,7 +440,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           <div class="wz-title">Tes objectifs</div>
           <div class="wz-field">
             <label class="wz-label">Objectif (choix multiple)</label>
-            <div class="wz-chips" id="wc_obj">
+            <div class="wz-chips multi" id="wc_obj">
               <div class="wz-chip" data-v="Perte de poids">Perte de poids</div>
               <div class="wz-chip" data-v="Prise de masse">Prise de masse</div>
               <div class="wz-chip" data-v="Remise en forme">Remise en forme</div>
@@ -617,7 +617,7 @@ async function wSubmit(){
     taille:document.getElementById('w_taille').value,
     imc:wCalcIMC(),
     sexe:wGetChips('wc_sexe',false),
-    objectif:wGetChips('wc_obj',True),
+    objectif:wGetChips('wc_obj',true),
     delai:document.getElementById('w_delai').value,
     niveau:document.getElementById('w_niveau').value,
     seances:document.getElementById('w_seances').value,
