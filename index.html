@@ -1,16 +1,23 @@
+
 <!DOCTYPE html>
 <html lang="fr">
-<head><!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-29VB9CR0LQ"></script>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COACH 360 — 360° de coaching. Zéro compromis.</title>
+
+<!-- Google Analytics GA4 — COACH 360 -->
+<!-- IMPORTANT : remplacer G-XXXXXXXXXX par ton vrai Measurement ID -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-29VB9CR0LQ');
+  gtag('config', 'G-XXXXXXXXXX', {
+    page_title: 'COACH 360 — Site officiel',
+    send_page_view: true
+  });
 </script>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>COACH 360 — 360° de coaching. Zéro compromis.</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -419,6 +426,12 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
             <div class="wz-field"><label class="wz-label">Prénom</label><input class="wz-input" id="w_prenom" type="text" placeholder="Ton prénom"></div>
             <div class="wz-field"><label class="wz-label">Email</label><input class="wz-input" id="w_email" type="email" placeholder="ton@email.com"></div>
           </div>
+          <div class="wz-row">
+            <div class="wz-field"><label class="wz-label">Téléphone <span style="font-weight:400;color:var(--or-sombre);font-size:11px;">(optionnel)</span></label><input class="wz-input" id="w_tel" type="tel" placeholder="ex. 06 12 34 56 78"></div>
+            <div class="wz-field" style="display:flex;align-items:flex-end;padding-bottom:4px;">
+              <span style="font-size:11px;color:var(--gris-texte);line-height:1.5;">📞 Utilisé uniquement par Julien pour te recontacter</span>
+            </div>
+          </div>
           <div class="wz-row3">
             <div class="wz-field"><label class="wz-label">Âge</label><input class="wz-input" id="w_age" type="number" placeholder="ex. 35"></div>
             <div class="wz-field"><label class="wz-label">Poids (kg)</label><input class="wz-input" id="w_poids" type="number" placeholder="ex. 78"></div>
@@ -439,8 +452,8 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           <div class="wz-num">02 / 05</div>
           <div class="wz-title">Tes objectifs</div>
           <div class="wz-field">
-            <label class="wz-label">Objectif (choix multiple)</label>
-            <div class="wz-chips multi" id="wc_obj">
+            <label class="wz-label">Objectif principal</label>
+            <div class="wz-chips" id="wc_obj">
               <div class="wz-chip" data-v="Perte de poids">Perte de poids</div>
               <div class="wz-chip" data-v="Prise de masse">Prise de masse</div>
               <div class="wz-chip" data-v="Remise en forme">Remise en forme</div>
@@ -465,7 +478,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
             <label class="wz-label">Équipement</label>
             <div class="wz-chips multi" id="wc_equip">
               <div class="wz-chip" data-v="Salle">Salle de sport</div>
-              <div class="wz-chip multi" data-v="Domicile">Domicile</div>
+              <div class="wz-chip" data-v="Domicile">Domicile</div>
               <div class="wz-chip" data-v="Extérieur">Extérieur</div>
               <div class="wz-chip" data-v="Piscine">Piscine</div>
             </div>
@@ -524,6 +537,14 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
             </div>
           </div>
           <div class="wz-field"><label class="wz-label">Ta motivation — pourquoi maintenant ?</label><textarea class="wz-textarea" id="w_motiv" placeholder="Ce qui te pousse à te lancer aujourd'hui..."></textarea></div>
+          <div class="wz-field" style="margin-top:16px;">
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
+              <input type="checkbox" id="w_rgpd" style="margin-top:3px;accent-color:var(--or);width:16px;height:16px;flex-shrink:0;">
+              <span style="font-size:12px;color:var(--gris-texte);line-height:1.6;">
+                J'accepte que mes données soient collectées et traitées par Julien Voyez (COACH 360) dans le cadre de mon suivi personnalisé. Ces données ne seront jamais transmises à des tiers. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression en écrivant à <strong>julienjvo@gmail.com</strong>.
+              </span>
+            </label>
+          </div>
           <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(3)">← Retour</button><button class="wz-btn wz-next" id="wSubmitBtn" onclick="wSubmit()">Envoyer mon profil →</button></div>
         </div>
       </div>
@@ -577,6 +598,16 @@ function wGoTo(n){
     d.className='wz-dot'+(i<wCur?' done':i===wCur?' active':'');
   }
   document.getElementById('wblocs').scrollIntoView({behavior:'smooth',block:'start'});
+  // GA4 — Suivi progression wizard
+  const etapes=['identite','objectifs','sante','mode_de_vie','motivations'];
+  if(typeof gtag!=='undefined'){
+    gtag('event','wizard_step',{
+      event_category:'wizard',
+      event_label:'etape_'+(n+1)+'_'+etapes[n],
+      step_number: n+1,
+      step_name: etapes[n]
+    });
+  }
 }
 
 function wGetChips(id,multi){
@@ -595,7 +626,7 @@ function wCalcIMC(){
 
 function wCalcLevier(){
   const imc=parseFloat(wCalcIMC());
-  const obj=wGetChips('wc_obj',true);
+  const obj=wGetChips('wc_obj',false);
   const niveau=document.getElementById('w_niveau').value;
   const patho=(document.getElementById('w_patho').value||'').toLowerCase();
   const hasP=patho&&patho!=='aucune'&&patho.length>2;
@@ -607,17 +638,20 @@ function wCalcLevier(){
 async function wSubmit(){
   const prenom=document.getElementById('w_prenom').value.trim();
   const email=document.getElementById('w_email').value.trim();
+  const rgpd=document.getElementById('w_rgpd').checked;
   if(!prenom||!email){alert('Merci d\'indiquer ton prénom et ton email.');return;}
+  if(!rgpd){alert('Merci d\'accepter les conditions de collecte des données (RGPD) pour continuer.');return;}
   const btn=document.getElementById('wSubmitBtn');
   btn.disabled=true;btn.textContent='Envoi en cours...';
   const payload={
     prenom,email,
+    telephone:document.getElementById('w_tel').value.trim()||'—',
     age:document.getElementById('w_age').value,
     poids:document.getElementById('w_poids').value,
     taille:document.getElementById('w_taille').value,
     imc:wCalcIMC(),
     sexe:wGetChips('wc_sexe',false),
-    objectif:wGetChips('wc_obj',true),
+    objectif:wGetChips('wc_obj',false),
     delai:document.getElementById('w_delai').value,
     niveau:document.getElementById('w_niveau').value,
     seances:document.getElementById('w_seances').value,
@@ -637,14 +671,21 @@ async function wSubmit(){
     levier:wCalcLevier(),
     date:new Date().toLocaleDateString('fr-FR')
   };
-  try{
-  await fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {'Content-Type': 'text/plain'},
-    body: JSON.stringify(payload)
-  });
-}catch(e){}
+  try{await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){}
+  // GA4 — Conversion wizard complété
+  if(typeof gtag!=='undefined'){
+    gtag('event','wizard_submit',{
+      event_category:'conversion',
+      event_label:'profil_envoye',
+      levier: payload.levier,
+      objectif: payload.objectif,
+      niveau: payload.niveau
+    });
+    gtag('event','generate_lead',{
+      currency: 'EUR',
+      value: 1
+    });
+  }
   document.getElementById('wblocs').style.display='none';
   document.getElementById('wprog').style.display='none';
   const res=document.getElementById('wresult');res.classList.add('visible');
@@ -654,6 +695,47 @@ async function wSubmit(){
   const lm={'NUTRITION EN PREMIER':'Priorité nutrition — ton plan alimentaire sera construit en premier.','SPORT EN PREMIER':'Priorité sport — ton programme d\'entraînement démarre en premier.','APPROCHE SIMULTANÉE':'Approche combinée — sport et nutrition démarrent ensemble.'};
   document.getElementById('wres_levier').textContent='Orientation : '+(lm[payload.levier]||payload.levier);
 }
+// GA4 — Scroll tracking des sections
+(function(){
+  const sections=[
+    {id:'methode',   label:'methode'},
+    {id:'apropos',   label:'a_propos'},
+    {id:'temoignages',label:'resultats'},
+    {id:'wizard',    label:'wizard'}
+  ];
+  const seen=new Set();
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting && !seen.has(e.target.id)){
+        seen.add(e.target.id);
+        const s=sections.find(x=>x.id===e.target.id);
+        if(s && typeof gtag!=='undefined'){
+          gtag('event','section_view',{
+            event_category:'engagement',
+            event_label:s.label,
+            section_name:s.label
+          });
+        }
+      }
+    });
+  },{threshold:0.3});
+  sections.forEach(s=>{
+    const el=document.getElementById(s.id);
+    if(el) obs.observe(el);
+  });
+})();
+
+// GA4 — Clic CTA hero
+document.querySelectorAll('.btn-primary, .btn-secondary, .nav-cta').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(typeof gtag!=='undefined'){
+      gtag('event','cta_click',{
+        event_category:'engagement',
+        event_label:btn.textContent.trim().substring(0,30)
+      });
+    }
+  });
+});
 </script>
 </body>
 </html>
