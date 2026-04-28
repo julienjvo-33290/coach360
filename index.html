@@ -637,7 +637,14 @@ async function wSubmit(){
     levier:wCalcLevier(),
     date:new Date().toLocaleDateString('fr-FR')
   };
-  try{await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){}
+  try{
+  await fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'text/plain'},
+    body: JSON.stringify(payload)
+  });
+}catch(e){}
   document.getElementById('wblocs').style.display='none';
   document.getElementById('wprog').style.display='none';
   const res=document.getElementById('wresult');res.classList.add('visible');
