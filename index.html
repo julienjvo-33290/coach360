@@ -439,7 +439,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           <div class="wz-num">02 / 05</div>
           <div class="wz-title">Tes objectifs</div>
           <div class="wz-field">
-            <label class="wz-label">Objectif principal</label>
+            <label class="wz-label">Objectif (choix multiple)</label>
             <div class="wz-chips" id="wc_obj">
               <div class="wz-chip" data-v="Perte de poids">Perte de poids</div>
               <div class="wz-chip" data-v="Prise de masse">Prise de masse</div>
@@ -465,7 +465,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
             <label class="wz-label">Équipement</label>
             <div class="wz-chips multi" id="wc_equip">
               <div class="wz-chip" data-v="Salle">Salle de sport</div>
-              <div class="wz-chip" data-v="Domicile">Domicile</div>
+              <div class="wz-chip multi" data-v="Domicile">Domicile</div>
               <div class="wz-chip" data-v="Extérieur">Extérieur</div>
               <div class="wz-chip" data-v="Piscine">Piscine</div>
             </div>
@@ -595,7 +595,7 @@ function wCalcIMC(){
 
 function wCalcLevier(){
   const imc=parseFloat(wCalcIMC());
-  const obj=wGetChips('wc_obj',false);
+  const obj=wGetChips('wc_obj',true);
   const niveau=document.getElementById('w_niveau').value;
   const patho=(document.getElementById('w_patho').value||'').toLowerCase();
   const hasP=patho&&patho!=='aucune'&&patho.length>2;
@@ -617,7 +617,7 @@ async function wSubmit(){
     taille:document.getElementById('w_taille').value,
     imc:wCalcIMC(),
     sexe:wGetChips('wc_sexe',false),
-    objectif:wGetChips('wc_obj',false),
+    objectif:wGetChips('wc_obj',True),
     delai:document.getElementById('w_delai').value,
     niveau:document.getElementById('w_niveau').value,
     seances:document.getElementById('w_seances').value,
