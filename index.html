@@ -669,9 +669,17 @@ async function wSubmit(){
     freins:wGetChips('wc_freins',true),
     motivation:document.getElementById('w_motiv').value,
     levier:wCalcLevier(),
-    date:new Date().toLocaleDateString('fr-FR')
+    date:new Date().toLocaleDateString('fr-FR'),
+    rgpd_consent:document.getElementById('w_rgpd').checked
   };
-  try{await fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(e){}
+  try{
+    await fetch(SCRIPT_URL,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+  }catch(e){console.error('Erreur envoi:',e);}
   // GA4 — Conversion wizard complété
   if(typeof gtag!=='undefined'){
     gtag('event','wizard_submit',{
