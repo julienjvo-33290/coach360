@@ -158,16 +158,27 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 40px;display:fl
 .wz-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;margin-bottom:24px;color:var(--blanc);}
 .wz-field{margin-bottom:16px;}
 .wz-label{font-size:12px;font-weight:500;color:var(--gris-texte);margin-bottom:6px;display:block;text-transform:uppercase;letter-spacing:1px;}
+.wz-label-hint{font-size:11px;color:rgba(201,168,76,0.55);font-weight:400;text-transform:none;letter-spacing:0;margin-left:6px;}
 .wz-input{width:100%;padding:12px 14px;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--blanc);transition:border 0.2s;}
 .wz-input:focus{outline:none;border-color:var(--or);}
 .wz-input::placeholder{color:#444;}
 .wz-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .wz-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 .wz-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
-.wz-chip{padding:8px 16px;border:1px solid rgba(201,168,76,0.2);border-radius:100px;font-size:13px;cursor:pointer;background:transparent;color:var(--gris-texte);transition:all 0.2s;}
+.wz-chip{padding:8px 16px;border:1px solid rgba(201,168,76,0.2);border-radius:100px;font-size:13px;cursor:pointer;background:transparent;color:var(--gris-texte);transition:all 0.2s;user-select:none;}
 .wz-chip:hover{border-color:var(--or);color:var(--or);}
 .wz-chip.sel{background:rgba(201,168,76,0.15);border-color:var(--or);color:var(--or);}
 .wz-chip.sel-m{background:rgba(201,168,76,0.1);border-color:rgba(201,168,76,0.4);color:var(--blanc);}
+/* ① Chips désactivés quand max 3 atteint */
+.wz-chip.wz-disabled{opacity:0.3;cursor:not-allowed;pointer-events:none;}
+/* ① Compteur objectifs */
+.wz-obj-counter{font-size:11px;color:var(--or);margin-bottom:8px;letter-spacing:0.04em;}
+/* ③ Preview checkpoints */
+.wz-cp-preview{display:none;margin-top:10px;padding:10px 14px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.18);border-radius:8px;font-size:12px;line-height:1.6;}
+.wz-cp-preview.visible{display:block;}
+.wz-cp-label{color:var(--or);font-weight:600;margin-right:6px;}
+.wz-cp-list{color:#bbb;}
+
 .wz-range-wrap{display:flex;align-items:center;gap:12px;}
 .wz-range-wrap input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:rgba(201,168,76,0.2);border-radius:2px;outline:none;}
 .wz-range-wrap input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--or);cursor:pointer;}
@@ -195,7 +206,7 @@ select.wz-input option{background:var(--gris);}
 .wz-sum-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:13px;}
 .wz-sum-row:last-child{border:none;}
 .wz-sum-key{color:var(--gris-texte);}
-.wz-sum-val{color:var(--blanc);font-weight:500;text-align:right;max-width:55%;}
+.wz-sum-val{color:var(--blanc);font-weight:500;text-align:right;max-width:60%;}
 .wz-levier{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:8px;padding:14px;text-align:center;color:var(--or);font-size:13px;font-weight:500;}
 
 /* FOOTER */
@@ -343,7 +354,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
       <div class="apropos-frame">
         <div class="apropos-frame-inner">
           <div class="apropos-initials">JV</div>
-          <div class="apropos-placeholder">Photo Julien Voyez</div>
+          <div class="apropos-placeholder">Photo Julien </div>
         </div>
         <div class="apropos-badge">
           <div class="apropos-badge-title">Ancien sportif de haut niveau</div>
@@ -353,9 +364,9 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
     </div>
     <div class="apropos-content">
       <span class="apropos-tag">À propos</span>
-      <h2 class="apropos-name">JULIEN<br>VOYEZ</h2>
+      <h2 class="apropos-name">JULIEN</h2>
       <div class="apropos-role">Fondateur · COACH 360</div>
-      <p class="apropos-text">Ancien sportif de haut niveau, formé en nutrition, j'ai construit et testé cette méthode sur moi-même. En 6 mois, j'ai transformé mon corps — 77,5 kg à 71 kg — tout en préservant ma masse musculaire malgré des contraintes médicales réelles.</p>
+      <p class="apropos-text">Ancien sportif de haut niveau, formé en nutrition, j'ai construit et testé cette méthode durant 5 ans sur de nombreux clients et sur moi-même. A titre d'exemple, en 6 mois, j'ai transformé mon corps — 77,5 kg à 70 kg — tout en développant ma masse musculaire malgré des contraintes médicales réelles (fractures de fatigues lombalgiques, déchirure des tendons :cheville et cuisse G épaules G&D, problèmes rénaux) .</p>
       <p class="apropos-text">COACH 360, c'est cette méthode que j'offre aux autres. Pas du marketing. Pas des promesses. Une approche rigoureuse, personnalisée, qui fonctionne.</p>
       <div class="apropos-creds">
         <div class="cred">
@@ -368,7 +379,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
         </div>
         <div class="cred">
           <div class="cred-icon">📈</div>
-          <div class="cred-text"><div class="cred-title">Méthode prouvée sur moi-même</div>77,5 → 71 kg · Recomposition corporelle · 6 mois · Contraintes rénales et articulaires</div>
+          <div class="cred-text"><div class="cred-title">Méthode prouvée sur moi-même</div>77,5 → 70 kg · Recomposition corporelle · 6 mois · Contraintes rénales et articulaires</div>
         </div>
       </div>
     </div>
@@ -400,9 +411,9 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
       </div>
     </div>
     <div class="temo-card">
-      <div class="temo-result">−6,5 kg · Recomposition</div>
+      <div class="temo-result">−7,5 kg · Recomposition</div>
       <div class="temo-stars">★★★★★</div>
-      <div class="temo-text">"J'ai construit cette méthode pour moi d'abord. 77,5 → 71 kg en 6 mois, avec des contraintes médicales réelles. Si ça marche pour moi, ça peut marcher pour toi."</div>
+      <div class="temo-text">"J'ai construit cette méthode et je l'ai affiné pour moi notamment. 77,5 → 70 kg en 6 mois, avec des contraintes médicales réelles. Si ça marche pour moi, ça peut marcher pour toi."</div>
       <div class="temo-author">
         <div class="temo-avatar">JV</div>
         <div><div class="temo-name">Julien Voyez</div><div class="temo-meta">Fondateur · 43 ans · 6 mois</div></div>
@@ -426,7 +437,8 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
         <div class="wz-dot" id="wd4"></div>
       </div>
       <div id="wblocs">
-        <!-- BLOC 1 -->
+
+        <!-- BLOC 1 — identique à l'original -->
         <div class="wz-bloc visible" id="wb0">
           <div class="wz-num">01 / 05</div>
           <div class="wz-title">Qui es-tu ?</div>
@@ -455,28 +467,62 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           </div>
           <div class="wz-nav"><span class="wz-step">Étape 1 sur 5</span><button class="wz-btn wz-next" onclick="wGoTo(1)">Suivant →</button></div>
         </div>
-        <!-- BLOC 2 -->
+
+        <!-- ═══ BLOC 2 — MODIFIÉ ═══
+             ① Multi-objectifs max 3
+             ② 4 niveaux sportifs
+             ③ Durée flexible + checkpoints adaptatifs -->
         <div class="wz-bloc" id="wb1">
           <div class="wz-num">02 / 05</div>
           <div class="wz-title">Tes objectifs</div>
+
+          <!-- ① Objectifs multi-sélection -->
           <div class="wz-field">
-            <label class="wz-label">Objectif principal</label>
+            <label class="wz-label">Objectif(s) principal(aux)
+              <span class="wz-label-hint">jusqu'à 3 choix</span>
+            </label>
+            <div class="wz-obj-counter" id="obj_counter">0 / 3 sélectionné(s)</div>
             <div class="wz-chips" id="wc_obj">
               <div class="wz-chip" data-v="Perte de poids">Perte de poids</div>
               <div class="wz-chip" data-v="Prise de masse">Prise de masse</div>
               <div class="wz-chip" data-v="Remise en forme">Remise en forme</div>
               <div class="wz-chip" data-v="Challenge sportif">Challenge sportif</div>
               <div class="wz-chip" data-v="Maintien">Maintien</div>
+              <div class="wz-chip" data-v="Santé / bien-être">Santé / bien-être</div>
+            </div>
+            <input type="hidden" id="w_obj_val">
+          </div>
+
+          <!-- ③ Durée programme avec checkpoints adaptatifs -->
+          <div class="wz-field">
+            <label class="wz-label">Durée de ton programme
+              <span class="wz-label-hint">les bilans s'adaptent automatiquement</span>
+            </label>
+            <select class="wz-input" id="w_duree" onchange="wUpdateCheckpoints(this.value)">
+              <option value="">-- choisir --</option>
+              <option value="4sem">4 semaines — Coup de boost</option>
+              <option value="8sem">8 semaines — Programme court intensif</option>
+              <option value="3mois">3 mois — Transformation progressive</option>
+              <option value="6mois">6 mois — Suivi complet long terme</option>
+            </select>
+            <div class="wz-cp-preview" id="cp_preview">
+              <span class="wz-cp-label">Tes bilans :</span>
+              <span class="wz-cp-list" id="cp_list"></span>
             </div>
           </div>
-          <div class="wz-row">
-            <div class="wz-field"><label class="wz-label">Délai souhaité</label>
-              <select class="wz-input" id="w_delai"><option value="">-- choisir --</option><option>4 semaines</option><option>8 semaines</option><option>12 semaines</option><option>20 semaines</option><option>6 mois +</option></select>
-            </div>
-            <div class="wz-field"><label class="wz-label">Niveau sportif</label>
-              <select class="wz-input" id="w_niveau"><option value="">-- choisir --</option><option>Débutant (−2h/sem)</option><option>Intermédiaire (2-6h/sem)</option><option>Confirmé (6h+/sem)</option></select>
-            </div>
+
+          <!-- ② 4 niveaux sportifs -->
+          <div class="wz-field">
+            <label class="wz-label">Niveau sportif actuel</label>
+            <select class="wz-input" id="w_niveau">
+              <option value="">-- choisir --</option>
+              <option value="Débutant">Débutant (− 2h / semaine)</option>
+              <option value="Intermédiaire">Intermédiaire (2 – 4h / semaine)</option>
+              <option value="Confirmé">Confirmé (4 – 6h / semaine)</option>
+              <option value="Expert">Expert (+ 6h / semaine)</option>
+            </select>
           </div>
+
           <div class="wz-field">
             <label class="wz-label">Séances / semaine</label>
             <div class="wz-range-wrap"><input type="range" min="1" max="7" value="3" id="w_seances" step="1" oninput="document.getElementById('wsv_seances').textContent=this.value"><span class="wz-range-val" id="wsv_seances">3</span></div>
@@ -493,7 +539,8 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           </div>
           <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(0)">← Retour</button><button class="wz-btn wz-next" onclick="wGoTo(2)">Suivant →</button></div>
         </div>
-        <!-- BLOC 3 -->
+
+        <!-- BLOC 3 — identique à l'original -->
         <div class="wz-bloc" id="wb2">
           <div class="wz-num">03 / 05</div>
           <div class="wz-title">Ta santé</div>
@@ -504,7 +551,8 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           <div class="wz-field"><label class="wz-label">Antécédents blessures / chirurgies</label><input class="wz-input" id="w_blessure" type="text" placeholder="ex. genou opéré 2022... ou Aucun"></div>
           <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(1)">← Retour</button><button class="wz-btn wz-next" onclick="wGoTo(3)">Suivant →</button></div>
         </div>
-        <!-- BLOC 4 -->
+
+        <!-- BLOC 4 — identique à l'original -->
         <div class="wz-bloc" id="wb3">
           <div class="wz-num">04 / 05</div>
           <div class="wz-title">Ton mode de vie</div>
@@ -528,7 +576,8 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           </div>
           <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(2)">← Retour</button><button class="wz-btn wz-next" onclick="wGoTo(4)">Suivant →</button></div>
         </div>
-        <!-- BLOC 5 -->
+
+        <!-- BLOC 5 — identique à l'original -->
         <div class="wz-bloc" id="wb4">
           <div class="wz-num">05 / 05</div>
           <div class="wz-title">Ce qui te motive</div>
@@ -555,6 +604,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           </div>
           <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(3)">← Retour</button><button class="wz-btn wz-next" id="wSubmitBtn" onclick="wSubmit()">Envoyer mon profil →</button></div>
         </div>
+
       </div>
       <!-- RÉSULTAT -->
       <div class="wz-result" id="wresult">
@@ -586,8 +636,44 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
 const SCRIPT_URL='https://script.google.com/macros/s/AKfycbwVOmkEWyr1t5imE9F0UR8mPqbTQFR0T6aQ3crAOegM93J1vsLHYuUsGtpr32rMg4cv/exec';
 let wCur=0;
 
-// Chips setup
-document.querySelectorAll('.wz-chips').forEach(g=>{
+// ③ Checkpoints par durée de programme
+const WZ_CHECKPOINTS={
+  '4sem':  ['J+15','J+30'],
+  '8sem':  ['J+15','J+30','J+60'],
+  '3mois': ['J+15','J+30','J+60','J+90'],
+  '6mois': ['J+15','J+30','J+60','J+90','J+120','J+180']
+};
+function wUpdateCheckpoints(val){
+  const preview=document.getElementById('cp_preview');
+  const list=document.getElementById('cp_list');
+  if(!val){preview.classList.remove('visible');return;}
+  list.textContent=WZ_CHECKPOINTS[val].join('  ·  ');
+  preview.classList.add('visible');
+}
+
+// ① Multi-objectifs (max 3) — initialisé après le DOM
+(function(){
+  const grid=document.getElementById('wc_obj');
+  grid.querySelectorAll('.wz-chip').forEach(chip=>{
+    chip.addEventListener('click',function(){
+      const sel=grid.querySelectorAll('.wz-chip.sel');
+      const isActive=chip.classList.contains('sel');
+      if(!isActive && sel.length>=3) return;
+      chip.classList.toggle('sel');
+      const newSel=grid.querySelectorAll('.wz-chip.sel');
+      const count=newSel.length;
+      document.getElementById('obj_counter').textContent=count+' / 3 sélectionné'+(count>1?'s':'');
+      // Désactiver les non-sélectionnés quand on atteint 3
+      grid.querySelectorAll('.wz-chip:not(.sel)').forEach(b=>{
+        b.classList.toggle('wz-disabled', count>=3);
+      });
+      document.getElementById('w_obj_val').value=[...newSel].map(b=>b.dataset.v).join(', ');
+    });
+  });
+})();
+
+// Chips mono/multi classiques (sexe, équipement, freins)
+document.querySelectorAll('.wz-chips:not(#wc_obj)').forEach(g=>{
   const multi=g.classList.contains('multi')||['wc_equip','wc_freins'].includes(g.id);
   g.querySelectorAll('.wz-chip').forEach(c=>{
     c.onclick=()=>{
@@ -634,23 +720,35 @@ function wCalcIMC(){
 
 function wCalcLevier(){
   const imc=parseFloat(wCalcIMC());
-  const obj=wGetChips('wc_obj',false);
+  // ① Utilise tous les objectifs sélectionnés
+  const objStr=(document.getElementById('w_obj_val').value||'').toLowerCase();
   const niveau=document.getElementById('w_niveau').value;
   const patho=(document.getElementById('w_patho').value||'').toLowerCase();
   const hasP=patho&&patho!=='aucune'&&patho.length>2;
   if(imc>=30||hasP)return'NUTRITION EN PREMIER';
-  if(obj==='Prise de masse'||obj==='Challenge sportif'||niveau.includes('Confirmé'))return'SPORT EN PREMIER';
+  if(objStr.includes('prise de masse')||objStr.includes('challenge')||niveau==='Expert'||niveau==='Confirmé')return'SPORT EN PREMIER';
   return'APPROCHE SIMULTANÉE';
 }
 
 async function wSubmit(){
   const prenom=document.getElementById('w_prenom').value.trim();
   const email=document.getElementById('w_email').value.trim();
+  const objectifs=document.getElementById('w_obj_val').value.trim();
+  const duree=document.getElementById('w_duree').value;
+  const niveau=document.getElementById('w_niveau').value;
   const rgpd=document.getElementById('w_rgpd').checked;
   if(!prenom||!email){alert('Merci d\'indiquer ton prénom et ton email.');return;}
+  if(!objectifs){alert('Choisis au moins un objectif.');return;}
+  if(!duree){alert('Choisis une durée de programme.');return;}
+  if(!niveau){alert('Choisis ton niveau sportif.');return;}
   if(!rgpd){alert('Merci d\'accepter les conditions de collecte des données (RGPD) pour continuer.');return;}
+
   const btn=document.getElementById('wSubmitBtn');
   btn.disabled=true;btn.textContent='Envoi en cours...';
+
+  const checkpointsStr=(WZ_CHECKPOINTS[duree]||[]).join(', ');
+  const dureeLabels={'4sem':'4 semaines','8sem':'8 semaines','3mois':'3 mois','6mois':'6 mois'};
+
   const payload={
     prenom,email,
     telephone:document.getElementById('w_tel').value.trim()||'—',
@@ -659,9 +757,13 @@ async function wSubmit(){
     taille:document.getElementById('w_taille').value,
     imc:wCalcIMC(),
     sexe:wGetChips('wc_sexe',false),
-    objectif:wGetChips('wc_obj',false),
-    delai:document.getElementById('w_delai').value,
-    niveau:document.getElementById('w_niveau').value,
+    // ① objectifs (pluriel, multi-valeurs)
+    objectifs,
+    // ③ durée et checkpoints
+    duree_programme:dureeLabels[duree]||duree,
+    checkpoints:checkpointsStr,
+    // ② niveau (4 valeurs possibles)
+    niveau,
     seances:document.getElementById('w_seances').value,
     equipement:wGetChips('wc_equip',true),
     pathologies:document.getElementById('w_patho').value||'Aucune',
@@ -678,8 +780,9 @@ async function wSubmit(){
     motivation:document.getElementById('w_motiv').value,
     levier:wCalcLevier(),
     date:new Date().toLocaleDateString('fr-FR'),
-    rgpd_consent:document.getElementById('w_rgpd').checked
+    rgpd_consent:true
   };
+
   try{
     await fetch(SCRIPT_URL,{
       method:'POST',
@@ -688,36 +791,52 @@ async function wSubmit(){
       body:JSON.stringify(payload)
     });
   }catch(e){console.error('Erreur envoi:',e);}
+
   // GA4 — Conversion wizard complété
   if(typeof gtag!=='undefined'){
     gtag('event','wizard_submit',{
       event_category:'conversion',
       event_label:'profil_envoye',
       levier: payload.levier,
-      objectif: payload.objectif,
-      niveau: payload.niveau
+      objectifs: payload.objectifs,
+      niveau: payload.niveau,
+      duree: payload.duree_programme
     });
-    gtag('event','generate_lead',{
-      currency: 'EUR',
-      value: 1
-    });
+    gtag('event','generate_lead',{currency:'EUR',value:1});
   }
+
   document.getElementById('wblocs').style.display='none';
   document.getElementById('wprog').style.display='none';
   const res=document.getElementById('wresult');res.classList.add('visible');
   document.getElementById('wres_sub').textContent='Merci '+prenom+' ! Julien analyse ton profil et te recontacte sous 24h avec ton programme personnalisé.';
-  const rows=[['Objectif',payload.objectif||'—'],['IMC',payload.imc],['Niveau',payload.niveau||'—'],['Séances/sem',payload.seances],['Sommeil',payload.sommeil],['Stress',payload.stress]];
-  document.getElementById('wres_summary').innerHTML=rows.map(([k,v])=>'<div class="wz-sum-row"><span class="wz-sum-key">'+k+'</span><span class="wz-sum-val">'+v+'</span></div>').join('');
-  const lm={'NUTRITION EN PREMIER':'Priorité nutrition — ton plan alimentaire sera construit en premier.','SPORT EN PREMIER':'Priorité sport — ton programme d\'entraînement démarre en premier.','APPROCHE SIMULTANÉE':'Approche combinée — sport et nutrition démarrent ensemble.'};
+
+  const rows=[
+    ['Objectif(s)', objectifs],
+    ['Programme',   dureeLabels[duree]||duree],
+    ['Bilans',      checkpointsStr],
+    ['IMC',         payload.imc],
+    ['Niveau',      niveau],
+    ['Séances/sem', payload.seances]
+  ];
+  document.getElementById('wres_summary').innerHTML=rows.map(([k,v])=>
+    '<div class="wz-sum-row"><span class="wz-sum-key">'+k+'</span><span class="wz-sum-val">'+v+'</span></div>'
+  ).join('');
+
+  const lm={
+    'NUTRITION EN PREMIER':'Priorité nutrition — ton plan alimentaire sera construit en premier.',
+    'SPORT EN PREMIER':'Priorité sport — ton programme d\'entraînement démarre en premier.',
+    'APPROCHE SIMULTANÉE':'Approche combinée — sport et nutrition démarrent ensemble.'
+  };
   document.getElementById('wres_levier').textContent='Orientation : '+(lm[payload.levier]||payload.levier);
 }
+
 // GA4 — Scroll tracking des sections
 (function(){
   const sections=[
-    {id:'methode',   label:'methode'},
-    {id:'apropos',   label:'a_propos'},
+    {id:'methode',    label:'methode'},
+    {id:'apropos',    label:'a_propos'},
     {id:'temoignages',label:'resultats'},
-    {id:'wizard',    label:'wizard'}
+    {id:'wizard',     label:'wizard'}
   ];
   const seen=new Set();
   const obs=new IntersectionObserver((entries)=>{
