@@ -336,7 +336,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
       <ul class="pilier-items">
         <li>Bilans J+15 / J+30 / J+60 / J+90</li>
         <li>Ajustements basés sur les données</li>
-        <li>Alertes médicales intégrées</li>
+        <li>Suivi des signaux physiques</li>
         <li>Mémoire de programme complète</li>
       </ul>
     </div>
@@ -354,7 +354,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
     <div class="diff-cell good">100% personnalisé</div>
     <div class="diff-cell bad">Sport ou nutrition seulement</div>
     <div class="diff-cell good">Sport + Nutrition + Suivi</div>
-    <div class="diff-cell bad">Aucune adaptation médicale</div>
+    <div class="diff-cell bad">Aucune prise en compte de ta réalité physique</div>
     <div class="diff-cell good">Contraintes médicales intégrées</div>
     <div class="diff-cell bad">Suivi inexistant après livraison</div>
     <div class="diff-cell good">Checkpoints J+15 à J+90</div>
@@ -615,13 +615,14 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           <div class="wz-field"><label class="wz-label">Sports ou activités que tu aimes</label><input class="wz-input" id="w_aime" type="text" placeholder="ex. natation, vélo, muscu..."></div>
           <div class="wz-field"><label class="wz-label">Ce que tu n'aimes pas (sport / aliments)</label><input class="wz-input" id="w_naime" type="text" placeholder="ex. running, poireaux..."></div>
           <div class="wz-field">
-            <label class="wz-label">Ce qui t'a bloqué par le passé</label>
+            <label class="wz-label">Si tu as déjà essayé, qu'est-ce qui n'a pas fonctionné ?</label>
             <div class="wz-chips multi" id="wc_freins">
               <div class="wz-chip" data-v="Manque de temps">Manque de temps</div>
               <div class="wz-chip" data-v="Manque de motivation">Manque de motivation</div>
               <div class="wz-chip" data-v="Blessure">Blessure</div>
               <div class="wz-chip" data-v="Résultats lents">Résultats trop lents</div>
               <div class="wz-chip" data-v="Seul sans suivi">Seul sans suivi</div>
+              <div class="wz-chip" data-v="Première tentative">C'est ma première tentative — rien n'a bloqué</div>
             </div>
           </div><div class="wz-field" style="margin-top:20px;border-top:1px solid rgba(201,168,76,0.15);padding-top:16px;">
             <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:8px;">
@@ -724,14 +725,7 @@ document.querySelectorAll('.wz-chips:not(#wc_obj)').forEach(g=>{
   });
 });
 
-function wGoTo(n){
-  document.getElementById('wb'+wCur).classList.remove('visible');
-  wCur=n;
-  document.getElementById('wb'+wCur).classList.add('visible');
-  for(let i=0;i<5;i++){
-    const d=document.getElementById('wd'+i);
-    d.className='wz-dot'+(i<wCur?' done':i===wCur?' active':'');
-  }function wGoToStep4() {
+function wGoToStep4() {
   const checkbox = document.getElementById('w_consent_sante');
   const error    = document.getElementById('err_consent_sante');
   if (!checkbox.checked) {
@@ -742,6 +736,15 @@ function wGoTo(n){
   error.style.display = 'none';
   wGoTo(3);
 }
+
+function wGoTo(n){
+  document.getElementById('wb'+wCur).classList.remove('visible');
+  wCur=n;
+  document.getElementById('wb'+wCur).classList.add('visible');
+  for(let i=0;i<5;i++){
+    const d=document.getElementById('wd'+i);
+    d.className='wz-dot'+(i<wCur?' done':i===wCur?' active':'');
+  }
   document.getElementById('wblocs').scrollIntoView({behavior:'smooth',block:'start'});
   const etapes=['identite','objectifs','sante','mode_de_vie','motivations'];
   if(typeof gtag!=='undefined'){
