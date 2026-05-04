@@ -222,6 +222,37 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
   .diff-grid{grid-template-columns:1fr 1fr;}
   .wz{padding:24px;}
   .wz-row,.wz-row3{grid-template-columns:1fr;}
+}/* ── PATCH RGPD ── */
+.wz-consent-sante {
+  background: rgba(201,168,76,0.07);
+  border-left: 3px solid var(--or);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+.wz-consent-sante label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--gris-texte);
+}
+.wz-consent-sante input[type="checkbox"] {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--or);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.wz-consent-sante a { color: var(--or); text-decoration: underline; }
+.wz-consent-error {
+  display: none;
+  color: #e05a5a;
+  font-size: 12px;
+  margin: 6px 0 0 26px;
 }
 </style>
 </head>
@@ -504,19 +535,57 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           </div>
           <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(0)">← Retour</button><button class="wz-btn wz-next" onclick="wGoTo(2)">Suivant →</button></div>
         </div>
-
-        <div class="wz-bloc" id="wb2">
+<div class="wz-bloc" id="wb2">
           <div class="wz-num">03 / 05</div>
-          <div class="wz-title">Ta santé</div>
-          <div class="wz-alert">Ces informations restent confidentielles et servent uniquement à sécuriser ton programme.</div>
-          <div class="wz-field"><label class="wz-label">Pathologies / maladies chroniques</label><input class="wz-input" id="w_patho" type="text" placeholder="ex. diabète, HTA... ou Aucune"></div>
-          <div class="wz-field"><label class="wz-label">Médicaments en cours</label><input class="wz-input" id="w_medic" type="text" placeholder="ex. metformine... ou Aucun"></div>
-          <div class="wz-field"><label class="wz-label">Allergies alimentaires</label><input class="wz-input" id="w_allergie" type="text" placeholder="ex. lactose, gluten... ou Aucune"></div>
-          <div class="wz-field"><label class="wz-label">Antécédents blessures / chirurgies</label><input class="wz-input" id="w_blessure" type="text" placeholder="ex. genou opéré 2022... ou Aucun"></div>
-          <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(1)">← Retour</button><button class="wz-btn wz-next" onclick="wGoTo(3)">Suivant →</button></div>
-        </div>
+          <div class="wz-title">Ton profil médical</div>
+          <p style="font-size:13px;color:var(--gris-texte);line-height:1.65;margin-bottom:18px;">
+            Ces informations permettent d'adapter chaque exercice et chaque repas
+            à ta réalité physique. Elles restent confidentielles et ne servent qu'à ça.
+          </p>
 
-        <div class="wz-bloc" id="wb3">
+          <div class="wz-consent-sante">
+            <label>
+              <input type="checkbox" id="w_consent_sante" name="consent_sante">
+              <span>
+                J'accepte que mes données de santé soient utilisées par Julien Voyez (COACH 360)
+                uniquement pour créer mon programme personnalisé —
+                <a href="privacy.html" target="_blank">Politique de confidentialité</a>.
+              </span>
+            </label>
+            <p class="wz-consent-error" id="err_consent_sante">
+              ⚠ Ce consentement est requis pour continuer.
+            </p>
+          </div>
+
+          <div class="wz-field">
+            <label class="wz-label">Pathologies ou maladies chroniques</label>
+            <input class="wz-input" id="w_patho" type="text"
+              placeholder="ex. diabète, HTA, problèmes rénaux... ou Aucune">
+          </div>
+          <div class="wz-field">
+            <label class="wz-label">Médicaments en cours</label>
+            <input class="wz-input" id="w_medic" type="text"
+              placeholder="ex. metformine, bêtabloquants... ou Aucun">
+          </div>
+          <div class="wz-field">
+            <label class="wz-label">Allergies alimentaires</label>
+            <input class="wz-input" id="w_allergie" type="text"
+              placeholder="ex. lactose, gluten, arachides... ou Aucune">
+          </div>
+          <div class="wz-field">
+            <label class="wz-label">Antécédents blessures / chirurgies</label>
+            <input class="wz-input" id="w_blessure" type="text"
+              placeholder="ex. genou opéré 2022, hernie discale... ou Aucun">
+          </div>
+          <p style="font-size:12px;color:var(--gris-texte);margin:4px 0 0;opacity:0.7;">
+            Rien n'est obligatoire — chaque information partagée rend ton programme plus précis et plus sûr.
+          </p>
+
+          <div class="wz-nav">
+            <button class="wz-btn wz-prev" onclick="wGoTo(1)">← Retour</button>
+            <button class="wz-btn wz-next" onclick="wGoToStep4()">Suivant →</button>
+          </div>
+        </div>
           <div class="wz-num">04 / 05</div>
           <div class="wz-title">Ton mode de vie</div>
           <div class="wz-field">
@@ -554,16 +623,30 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
               <div class="wz-chip" data-v="Résultats lents">Résultats trop lents</div>
               <div class="wz-chip" data-v="Seul sans suivi">Seul sans suivi</div>
             </div>
-          </div>
-          <div class="wz-field"><label class="wz-label">Ta motivation — pourquoi maintenant ?</label><textarea class="wz-textarea" id="w_motiv" placeholder="Ce qui te pousse à te lancer aujourd'hui..."></textarea></div>
-          <div class="wz-field" style="margin-top:16px;">
-            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;">
-              <input type="checkbox" id="w_rgpd" style="margin-top:3px;accent-color:var(--or);width:16px;height:16px;flex-shrink:0;">
+          </div><div class="wz-field" style="margin-top:20px;border-top:1px solid rgba(201,168,76,0.15);padding-top:16px;">
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:8px;">
+              <input type="checkbox" id="w_rgpd" name="consent_global"
+                style="margin-top:3px;width:16px;height:16px;accent-color:var(--or);flex-shrink:0;cursor:pointer;">
               <span style="font-size:12px;color:var(--gris-texte);line-height:1.6;">
-                J'accepte que mes données soient collectées et traitées par Julien Voyez (COACH 360) dans le cadre de mon suivi personnalisé. Ces données ne seront jamais transmises à des tiers. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression en écrivant à <strong>julienjvo@gmail.com</strong>.
+                J'accepte que mes données personnelles soient collectées et traitées par
+                <strong style="color:var(--blanc);font-weight:500;">Julien Voyez (COACH 360)</strong>
+                dans le cadre de mon suivi personnalisé. Ces données ne seront jamais
+                transmises à des tiers. Conformément au RGPD, je dispose d'un droit d'accès,
+                de rectification et de suppression en écrivant à <strong>julienjvo@gmail.com</strong>.
               </span>
             </label>
+            <p style="font-size:11px;color:var(--gris-texte);margin:4px 0 0 26px;opacity:0.75;">
+              En savoir plus :
+              <a href="privacy.html" target="_blank" style="color:var(--or);text-decoration:underline;">
+                Politique de Confidentialité complète
+              </a>
+            </p>
+            <p id="err_rgpd" style="display:none;color:#e05a5a;font-size:12px;margin:6px 0 0 26px;">
+              ⚠ Tu dois accepter les conditions pour envoyer ton profil.
+            </p>
           </div>
+          <div class="wz-field"><label class="wz-label">Ta motivation — pourquoi maintenant ?</label><textarea class="wz-textarea" id="w_motiv" placeholder="Ce qui te pousse à te lancer aujourd'hui..."></textarea></div>
+ 
           <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(3)">← Retour</button><button class="wz-btn wz-next" id="wSubmitBtn" onclick="wSubmit()">Envoyer mon profil →</button></div>
         </div>
       </div>
@@ -647,7 +730,17 @@ function wGoTo(n){
   for(let i=0;i<5;i++){
     const d=document.getElementById('wd'+i);
     d.className='wz-dot'+(i<wCur?' done':i===wCur?' active':'');
+  }function wGoToStep4() {
+  const checkbox = document.getElementById('w_consent_sante');
+  const error    = document.getElementById('err_consent_sante');
+  if (!checkbox.checked) {
+    error.style.display = 'block';
+    checkbox.closest('.wz-consent-sante').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
   }
+  error.style.display = 'none';
+  wGoTo(3);
+}
   document.getElementById('wblocs').scrollIntoView({behavior:'smooth',block:'start'});
   const etapes=['identite','objectifs','sante','mode_de_vie','motivations'];
   if(typeof gtag!=='undefined'){
@@ -696,7 +789,8 @@ async function wSubmit(){
   if(!objectifs){alert('Choisis au moins un objectif.');return;}
   if(!duree){alert('Choisis une durée de programme.');return;}
   if(!niveau){alert('Choisis ton niveau sportif.');return;}
-  if(!rgpd){alert('Merci d\'accepter les conditions de collecte des données (RGPD) pour continuer.');return;}
+ if (!rgpd) { document.getElementById('err_rgpd').style.display='block'; return; }
+document.getElementById('err_rgpd').style.display='none';
 
   const btn=document.getElementById('wSubmitBtn');
   btn.disabled=true;btn.textContent='Envoi en cours...';
