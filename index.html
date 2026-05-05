@@ -473,7 +473,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
             <div class="wz-chips" id="wc_sexe">
               <div class="wz-chip" data-v="H">Homme</div>
               <div class="wz-chip" data-v="F">Femme</div>
-              <div class="wz-chip" data-v="Autre">Autre</div>
+              <div class="wz-chip" data-v="NR">Ne souhaite pas répondre</div>
             </div>
           </div>
           <div class="wz-nav"><span class="wz-step">Étape 1 sur 5</span><button class="wz-btn wz-next" onclick="wGoTo(1)">Suivant →</button></div>
@@ -504,7 +504,7 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
               <option value="3mois">3 mois — Transformation progressive</option>
               <option value="6mois">6 mois — Suivi complet long terme</option>
             </select>
-            <div class="wz-cp-preview" id="cp_preview">
+            <div class="wz-cp-preview" id="cp_preview" style="text-align:right;">
               <span class="wz-cp-label">Tes bilans :</span>
               <span class="wz-cp-list" id="cp_list"></span>
             </div>
@@ -520,17 +520,22 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
             </select>
           </div>
           <div class="wz-field">
-            <label class="wz-label">Séances / semaine</label>
+            <label class="wz-label">Nombre de séances par semaine que tu imagines pouvoir consacrer</label>
             <div class="wz-range-wrap"><input type="range" min="1" max="7" value="3" id="w_seances" step="1" oninput="document.getElementById('wsv_seances').textContent=this.value"><span class="wz-range-val" id="wsv_seances">3</span></div>
             <div class="wz-range-labels"><span>1</span><span>7</span></div>
           </div>
           <div class="wz-field">
-            <label class="wz-label">Équipement</label>
-            <div class="wz-chips multi" id="wc_equip">
-              <div class="wz-chip" data-v="Salle">Salle de sport</div>
-              <div class="wz-chip" data-v="Domicile">Domicile</div>
-              <div class="wz-chip" data-v="Extérieur">Extérieur</div>
-              <div class="wz-chip" data-v="Piscine">Piscine</div>
+            <label class="wz-label">Tes terrains de &ldquo;Jeux&rdquo;</label>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;align-items:center;">
+              <div class="wz-chips multi" id="wc_equip" style="display:contents;">
+                <div class="wz-chip" data-v="Salle">Salle de sport</div>
+                <div class="wz-chip" data-v="Domicile">Domicile</div>
+                <div class="wz-chip" data-v="Extérieur">Extérieur</div>
+                <div class="wz-chip" data-v="Piscine">Piscine</div>
+              </div>
+              <div id="chip_autre_equip" class="wz-chip" style="cursor:pointer;" onclick="activateAutreEquip()">Autre</div>
+              <input type="text" id="equip_autre_input" placeholder="Précise..." 
+                style="display:none;padding:8px 14px;border:1px solid var(--or);border-radius:100px;font-size:13px;background:rgba(201,168,76,0.12);color:var(--or);outline:none;width:150px;font-family:'DM Sans',sans-serif;">
             </div>
           </div>
           <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(0)">← Retour</button><button class="wz-btn wz-next" onclick="wGoTo(2)">Suivant →</button></div>
@@ -543,18 +548,8 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
             à ta réalité physique. Elles restent confidentielles et ne servent qu'à ça.
           </p>
 
-          <div class="wz-consent-sante">
-            <label>
-              <input type="checkbox" id="w_consent_sante" name="consent_sante">
-              <span>
-                J'accepte que mes données de santé soient utilisées par Julien Voyez (COACH 360)
-                uniquement pour créer mon programme personnalisé —
-                <a href="privacy.html" target="_blank">Politique de confidentialité</a>.
-              </span>
-            </label>
-            <p class="wz-consent-error" id="err_consent_sante">
-              ⚠ Ce consentement est requis pour continuer.
-            </p>
+          <div class="wz-alert" style="margin-bottom:16px;">
+            🔒 Tes données de santé sont utilisées uniquement par Julien pour créer ton programme. Elles ne sont jamais partagées — <a href="privacy.html" target="_blank" style="color:var(--or);text-decoration:underline;">Politique de confidentialité</a>.
           </div>
 
           <div class="wz-field">
@@ -602,10 +597,23 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
           </div>
           <div class="wz-row">
             <div class="wz-field"><label class="wz-label">Régime alimentaire</label>
-              <select class="wz-input" id="w_regime"><option>Omnivore</option><option>Végétarien</option><option>Végétalien</option><option>Sans gluten</option><option>Autre</option></select>
+              <select class="wz-input" id="w_regime" onchange="toggleRegimeAutre(this.value)">
+                  <option value="Omnivore">Omnivore (je mange de tout)</option>
+                  <option value="Végétarien">Végétarien (pas de viande ni poisson)</option>
+                  <option value="Végétalien">Végétalien (pas de produit animal)</option>
+                  <option value="Sans gluten">Sans gluten</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              <input type="text" id="regime_autre_input" placeholder="Précise ton régime alimentaire..." 
+                class="wz-input" style="display:none;margin-top:8px;">
             </div>
             <div class="wz-field"><label class="wz-label">Activité pro</label>
-              <select class="wz-input" id="w_sedent"><option>Assis toute la journée</option><option>Mixte assis/debout</option><option>Debout / déplacements</option><option>Travail physique</option></select>
+              <select class="wz-input" id="w_sedent">
+                  <option value="Assis toute la journée">Assis toute la journée (≈ 14h assis / jour)</option>
+                  <option value="Mixte assis/debout">Mixte assis/debout (≈ 6–8h assis / jour)</option>
+                  <option value="Debout / déplacements">Debout / déplacements (≈ 2–4h assis / jour)</option>
+                  <option value="Travail physique">Travail physique (effort continu)</option>
+                </select>
             </div>
           </div>
           <div class="wz-nav"><button class="wz-btn wz-prev" onclick="wGoTo(2)">← Retour</button><button class="wz-btn wz-next" onclick="wGoTo(4)">Suivant →</button></div>
@@ -614,8 +622,8 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
         <div class="wz-bloc" id="wb4">
           <div class="wz-num">05 / 05</div>
           <div class="wz-title">Ce qui te motive</div>
-          <div class="wz-field"><label class="wz-label">Sports ou activités que tu aimes</label><input class="wz-input" id="w_aime" type="text" placeholder="ex. natation, vélo, muscu..."></div>
-          <div class="wz-field"><label class="wz-label">Ce que tu n'aimes pas (sport / aliments)</label><input class="wz-input" id="w_naime" type="text" placeholder="ex. running, poireaux..."></div>
+          <div class="wz-field"><label class="wz-label">Ce que tu aimes <span class="wz-label-hint">(sport / activités / aliments)</span></label><input class="wz-input" id="w_aime" type="text" placeholder="ex. natation, vélo, muscu, poulet, légumineuses..."></div>
+          <div class="wz-field"><label class="wz-label">Ce que tu n'aimes pas <span class="wz-label-hint">(sport / activités / aliments)</span></label><input class="wz-input" id="w_naime" type="text" placeholder="ex. running, poireaux, soja..."></div>
           <div class="wz-field">
             <label class="wz-label">Si tu as déjà essayé, qu'est-ce qui n'a pas fonctionné ?</label>
             <div class="wz-chips multi" id="wc_freins">
@@ -624,14 +632,14 @@ footer{background:var(--noir);border-top:1px solid rgba(201,168,76,0.15);padding
               <div class="wz-chip" data-v="Blessure">Blessure</div>
               <div class="wz-chip" data-v="Résultats lents">Résultats trop lents</div>
               <div class="wz-chip" data-v="Seul sans suivi">Seul sans suivi</div>
-              <div class="wz-chip" data-v="Première tentative">C'est ma première tentative — rien n'a bloqué</div>
+              <div class="wz-chip wz-chip-premiere" data-v="Première tentative" id="chip_premiere">C'est ma première tentative — rien n'a bloqué</div>
             </div>
           </div><div class="wz-field" style="margin-top:20px;border-top:1px solid rgba(201,168,76,0.15);padding-top:16px;">
             <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:8px;">
               <input type="checkbox" id="w_rgpd" name="consent_global"
                 style="margin-top:3px;width:16px;height:16px;accent-color:var(--or);flex-shrink:0;cursor:pointer;">
               <span style="font-size:12px;color:var(--gris-texte);line-height:1.6;">
-                J'accepte que mes données personnelles soient collectées et traitées par
+                J'accepte que mes données personnelles et de santé soient collectées et traitées par
                 <strong style="color:var(--blanc);font-weight:500;">Julien Voyez (COACH 360)</strong>
                 dans le cadre de mon suivi personnalisé. Ces données ne seront jamais
                 transmises à des tiers. Conformément au RGPD, je dispose d'un droit d'accès,
@@ -728,14 +736,6 @@ document.querySelectorAll('.wz-chips:not(#wc_obj)').forEach(g=>{
 });
 
 function wGoToStep4() {
-  const checkbox = document.getElementById('w_consent_sante');
-  const error    = document.getElementById('err_consent_sante');
-  if (!checkbox.checked) {
-    error.style.display = 'block';
-    checkbox.closest('.wz-consent-sante').scrollIntoView({ behavior: 'smooth', block: 'center' });
-    return;
-  }
-  error.style.display = 'none';
   wGoTo(3);
 }
 
@@ -814,17 +814,29 @@ document.getElementById('err_rgpd').style.display='none';
     sexe:wGetChips('wc_sexe',false),
     objectifs,
     duree_programme:dureeLabels[duree]||duree,
-    checkpoints:checkpointsStr,
     niveau,
     seances:document.getElementById('w_seances').value,
-    equipement:wGetChips('wc_equip',true),
+    equipement:(function(){
+      const chips = wGetChips('wc_equip',true);
+      const autreInput = document.getElementById('equip_autre_input');
+      const autreText = autreInput && autreInput.value.trim();
+      if (autreText) return chips ? chips + ', Autre: ' + autreText : 'Autre: ' + autreText;
+      return chips || '—';
+    })(),
     pathologies:document.getElementById('w_patho').value||'Aucune',
     medicaments:document.getElementById('w_medic').value||'Aucun',
     allergies:document.getElementById('w_allergie').value||'Aucune',
     blessures:document.getElementById('w_blessure').value||'Aucun',
     sommeil:document.getElementById('w_sommeil').value+'/10',
     stress:document.getElementById('w_stress').value+'/10',
-    regime:document.getElementById('w_regime').value,
+    regime:(function(){
+      const val = document.getElementById('w_regime').value;
+      if (val === 'Autre') {
+        const precision = document.getElementById('regime_autre_input').value.trim();
+        return precision ? 'Autre: ' + precision : 'Autre';
+      }
+      return val;
+    })(),
     sedentarite:document.getElementById('w_sedent').value,
     sport_aime:document.getElementById('w_aime').value,
     naime_pas:document.getElementById('w_naime').value,
@@ -864,7 +876,6 @@ document.getElementById('err_rgpd').style.display='none';
   const rows=[
     ['Objectif(s)', objectifs],
     ['Programme',   dureeLabels[duree]||duree],
-    ['Bilans',      checkpointsStr],
     ['IMC',         payload.imc],
     ['Niveau',      niveau],
     ['Séances/sem', payload.seances]
@@ -907,6 +918,72 @@ document.getElementById('err_rgpd').style.display='none';
   sections.forEach(s=>{
     const el=document.getElementById(s.id);
     if(el) obs.observe(el);
+  });
+})();
+
+// Gestion "Autre" régime alimentaire
+function toggleRegimeAutre(val) {
+  const input = document.getElementById('regime_autre_input');
+  if (val === 'Autre') {
+    input.style.display = 'block';
+    input.focus();
+  } else {
+    input.style.display = 'none';
+    input.value = '';
+  }
+}
+
+// Gestion "Autre" équipement — chip → input inline
+function activateAutreEquip() {
+  const chip  = document.getElementById('chip_autre_equip');
+  const input = document.getElementById('equip_autre_input');
+  // Toggle : si input déjà visible, cacher
+  if (input.style.display === 'inline-block') {
+    input.style.display = 'none';
+    input.value = '';
+    chip.classList.remove('sel-m');
+    chip.style.borderColor = '';
+    chip.style.color = '';
+    return;
+  }
+  // Afficher l'input, cacher la chip visuellement
+  chip.classList.add('sel-m');
+  input.style.display = 'inline-block';
+  input.focus();
+  // Quand l'utilisateur quitte le champ vide → reset
+  input.onblur = function() {
+    if (!input.value.trim()) {
+      input.style.display = 'none';
+      chip.classList.remove('sel-m');
+    }
+  };
+}
+
+// Exclusivité "Première tentative"
+(function(){
+  const chips = document.querySelectorAll('#wc_freins .wz-chip');
+  const premiereChip = document.getElementById('chip_premiere');
+  if (!premiereChip) return;
+  
+  chips.forEach(chip => {
+    chip.addEventListener('click', function() {
+      if (chip === premiereChip) {
+        const isNowActive = chip.classList.contains('sel-m');
+        if (isNowActive) {
+          // Désactiver toutes les autres
+          chips.forEach(c => { if (c !== premiereChip) { c.classList.remove('sel-m'); c.classList.add('wz-disabled'); } });
+        } else {
+          // Réactiver les autres
+          chips.forEach(c => { if (c !== premiereChip) c.classList.remove('wz-disabled'); });
+        }
+      } else {
+        // Si on coche autre chose, décocher "première tentative"
+        if (premiereChip.classList.contains('sel-m')) {
+          premiereChip.classList.remove('sel-m');
+          chips.forEach(c => { if (c !== premiereChip) c.classList.remove('wz-disabled'); });
+        }
+      }
+    });
   });
 })();
 
